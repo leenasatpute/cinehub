@@ -25,7 +25,7 @@ export default function CheckoutPage() {
 
       const data = await res.json();
 
-      console.log("Response:", data); // 👈 check 2
+      console.log("Response:", data); //
 
       if (data.success) {
         alert("Booking Successful 🎉");

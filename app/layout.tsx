@@ -1,18 +1,22 @@
 import "./globals.css";
-import Navbar from "../components/Navbar";
+import Header from "@/components/Header";  
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "CineHub",
   description: "Movie Booking App",
 };
 
-export default function RootLayout({ children }) {
+const RootLayout  = ({ }) => {
   return (
     <html lang="en">
       <body>
-        <Navbar />
-        {children}
+        <Header />   
+        {/* {children} */}
+        <Footer />
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout

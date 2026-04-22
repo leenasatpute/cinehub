@@ -83,7 +83,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Navbar */}
-      <nav className="bg-gray-900 text-white sticky top-0 z-50 shadow-lg">
+      {/* <nav className="bg-gray-900 text-white sticky top-0 z-50 shadow-lg">
         <div className="max-w-[1400px] mx-auto px-4">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-10">
@@ -103,10 +103,10 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </nav>
+      </nav> */}
 
       {/* Second Navbar - Search */}
-      <div className="bg-gray-800 text-white border-b border-gray-700">
+      {/* <div className="bg-gray-800 text-white border-b border-gray-700">
         <div className="max-w-[1400px] mx-auto px-4 py-4">
           <input
             type="text"
@@ -114,7 +114,7 @@ export default function Home() {
             className="w-full px-5 py-3 rounded-md text-black text-base focus:outline-none focus:ring-2 focus:ring-red-500"
           />
         </div>
-      </div>
+      </div> */}
 
       {/* Hero Banner Carousel */}
       <div className="max-w-[1400px] mx-auto px-4 mt-8 relative group">

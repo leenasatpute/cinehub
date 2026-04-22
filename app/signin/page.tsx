@@ -31,29 +31,6 @@ export default function Signin() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
-      <nav className="bg-black text-white sticky top-0 z-50 shadow-lg">
-        <div className="max-w-[1400px] mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-red-500">
-            CineHub 🎬
-          </Link>
-          <div className="flex items-center gap-6">
-            <Link href="/" className={linkClass('/')}>
-              Home
-            </Link>
-            <Link href="/movies" className={linkClass('/movies')}>
-              Movies
-            </Link>
-            <Link href="/about" className={linkClass('/about')}>
-              About
-            </Link>
-            <Link href="/contact" className={linkClass('/contact')}>
-              Contact
-            </Link>
-           
-          </div>
-        </div>
-      </nav>
 
       {/* Sign In Section */}
       <div className="flex items-center justify-center py-16 px-4">

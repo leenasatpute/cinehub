@@ -1,13 +1,9 @@
 'use client'
 import Link from 'next/link';
-import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 export default function About() {
   const pathname = usePathname();
-  const [selectedCity, setSelectedCity] = useState<string>("Pune");
-
-  const cities: string[] = ["Mumbai", "Pune", "Nagpur" , "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata"];
 
   const stats = [
     { number: "10M+", label: "Happy Customers" },
@@ -63,16 +59,6 @@ export default function About() {
             <Link href="/contact" className={linkClass('/contact')}>
               Contact
             </Link>
-            <Link href="/login" className={linkClass('/login')}>
-              Login
-            </Link>
-            <select
-              value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
-              className="bg-gray-800 border border-gray-700 px-3 py-2 rounded text-sm cursor-pointer ml-4"
-            >
-              {cities.map((city: string) => <option key={city} value={city}>{city}</option>)}
-            </select>
           </div>
         </div>
       </nav>
@@ -100,7 +86,6 @@ export default function About() {
               From movies to live concerts, from IPL matches to theatre plays - everything in one place.
               Over 10 million customers trust us daily to deliver unforgettable entertainment experiences.
             </p>
-           
           </div>
           <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl p-12 text-white shadow-2xl">
             <h3 className="text-3xl font-bold mb-8">Why Choose Us?</h3>

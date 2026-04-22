@@ -73,7 +73,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % banners.length);
-    }, 4000);
+    }, 2000);
     return () => clearInterval(timer);
   }, [banners.length]);
 
@@ -92,11 +92,9 @@ export default function Home() {
               </Link>
               <div className="hidden lg:flex gap-8 text-sm font-medium">
                 <Link href="/movies" className="hover:text-red-500 transition">Movies</Link>
-                <Link href="#" className="hover:text-red-500 transition">Stream</Link>
-                <Link href="#" className="hover:text-red-500 transition">Events</Link>
-                <Link href="#" className="hover:text-red-500 transition">Plays</Link>
-                <Link href="#" className="hover:text-red-500 transition">Sports</Link>
-                <Link href="#" className="hover:text-red-500 transition">Activities</Link>
+                <Link href="/about" className="hover:text-red-500 transition">About</Link>
+                <Link href="/contact" className="hover:text-red-500 transition">Contact</Link>
+                <Link href="/sports" className="hover:text-red-500 transition">Sports</Link>
               </div>
             </div>
 
@@ -179,7 +177,7 @@ export default function Home() {
       <div className="max-w-[1400px] mx-auto px-4 py-12">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-bold text-gray-900">Recommended Movies</h2>
-          <Link href="#" className="text-red-500 text-base font-semibold hover:underline">See All ›</Link>
+          <Link href="/movies" className="text-red-500 text-base font-semibold hover:underline">See All ›</Link>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">

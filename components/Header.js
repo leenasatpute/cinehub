@@ -4,13 +4,19 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <header className="bg-black text-white px-6 py-4 flex items-center">
+    <header className="bg-black text-white px-6 py-4 flex items-center sticky top-0 z-50 ">
       <h1 className="text-2xl font-bold text-red-500">CineHub 🎬</h1>
 
       <nav className="flex-1 flex justify-center gap-10 text-lg">
         <Link href="/">Home</Link>
         <Link href="/movie">Movies</Link>
         <Link href="/shows">Shows</Link>
+        <Link href="#" className="hover:text-red-500 transition">
+          Events
+        </Link>
+        <Link href="#" className="hover:text-red-500 transition">
+          Sports
+        </Link>
         <Link href="/contact">Contact</Link>
       </nav>
 

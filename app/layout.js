@@ -1,30 +1,21 @@
 import "./globals.css";
-<<<<<<< HEAD
-import Header from "@/components/Header";  
+import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-=======
->>>>>>> main
 
 export const metadata = {
   title: "CineHub",
   description: "Movie Booking App",
 };
 
-const RootLayout  = ({ }) => {
+const RootLayout = ({ children }) => {
   return (
     <html lang="en">
       <body>
-<<<<<<< HEAD
-        <Header />   
-        {/* {children} */}
-        <Footer />
-=======
-    
+        <Header />
         {children}
->>>>>>> main
+        <Footer />
       </body>
     </html>
   );
 };
-
-export default RootLayout
+export default RootLayout;

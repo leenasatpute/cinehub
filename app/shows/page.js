@@ -7,6 +7,7 @@ const ShowsPage = () => {
     {
       id: 1,
       title: "Arijit Singh Live",
+      category: "Concert",
       image: "https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2",
       date: "20 May 2026",
       price: 999,
@@ -14,6 +15,7 @@ const ShowsPage = () => {
     {
       id: 2,
       title: "Comedy Night",
+      category: "Comedy",
       image: "https://images.unsplash.com/photo-1520975916090-3105956dac38",
       date: "25 May 2026",
       price: 499,
@@ -21,6 +23,7 @@ const ShowsPage = () => {
     {
       id: 3,
       title: "DJ Party",
+      category: "Party",
       image: "https://images.unsplash.com/photo-1506157786151-b8491531f063",
       date: "30 May 2026",
       price: 799,
@@ -28,6 +31,7 @@ const ShowsPage = () => {
     {
       id: 4,
       title: "Drama Show",
+      category: "Drama",
       image: "https://images.unsplash.com/photo-1503095396549-807759245b35",
       date: "2 June 2026",
       price: 399,
@@ -35,6 +39,7 @@ const ShowsPage = () => {
     {
       id: 5,
       title: "Rock Concert",
+      category: "Concert",
       image: "https://images.unsplash.com/photo-1497032205916-ac775f0649ae",
       date: "5 June 2026",
       price: 1200,
@@ -42,6 +47,7 @@ const ShowsPage = () => {
     {
       id: 6,
       title: "Music Festival",
+      category: "Festival",
       image: "https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2",
       date: "10 June 2026",
       price: 1500,
@@ -49,6 +55,7 @@ const ShowsPage = () => {
     {
       id: 7,
       title: "Standup Special",
+      category: "Comedy",
       image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4",
       date: "12 June 2026",
       price: 600,
@@ -56,6 +63,7 @@ const ShowsPage = () => {
     {
       id: 8,
       title: "EDM Night",
+      category: "Party",
       image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
       date: "15 June 2026",
       price: 900,
@@ -63,6 +71,7 @@ const ShowsPage = () => {
     {
       id: 9,
       title: "Hip Hop Fest",
+      category: "Festival",
       image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
       date: "18 June 2026",
       price: 1100,
@@ -70,29 +79,78 @@ const ShowsPage = () => {
     {
       id: 10,
       title: "Bollywood Night",
+      category: "Party",
       image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30",
       date: "20 June 2026",
       price: 700,
     },
   ];
 
-  // ✅ Pagination
+  // 🔍 Search
+  const [search, setSearch] = useState("");
+
+  // 🎯 Filter
+  const [category, setCategory] = useState("All");
+
+  // 📄 Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const showsPerPage = 8;
 
+  // 🔥 FILTER + SEARCH
+  const filteredShows = allShows.filter((show) => {
+    const matchSearch = show.title.toLowerCase().includes(search.toLowerCase());
+
+    const matchCategory = category === "All" || show.category === category;
+
+    return matchSearch && matchCategory;
+  });
+
+  // Pagination
   const indexOfLast = currentPage * showsPerPage;
   const indexOfFirst = indexOfLast - showsPerPage;
-  const currentShows = allShows.slice(indexOfFirst, indexOfLast);
+  const currentShows = filteredShows.slice(indexOfFirst, indexOfLast);
 
-  const totalPages = Math.ceil(allShows.length / showsPerPage);
+  const totalPages = Math.ceil(filteredShows.length / showsPerPage);
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">
+      <h1 className="text-3xl font-bold text-center mb-4">
         🎭 Live Shows & Events
       </h1>
 
-      {/* Shows Grid */}
+      {/* 🔍 SEARCH */}
+      <input
+        type="text"
+        placeholder="Search shows..."
+        className="border p-2 mb-4 w-full"
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setCurrentPage(1);
+        }}
+      />
+
+      {/* 🎯 FILTER BUTTONS (CENTER) */}
+      <div className="flex justify-center flex-wrap gap-3 mb-6">
+        {["All", "Concert", "Comedy", "Party", "Drama", "Festival"].map(
+          (cat) => (
+            <button
+              key={cat}
+              onClick={() => {
+                setCategory(cat);
+                setCurrentPage(1);
+              }}
+              className={`px-3 py-1 rounded ${
+                category === cat ? "bg-red-500 text-white" : "bg-gray-300"
+              }`}
+            >
+              {cat}
+            </button>
+          ),
+        )}
+      </div>
+
+      {/* 🎭 SHOWS GRID */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {currentShows.map((show) => (
           <div
@@ -114,7 +172,7 @@ const ShowsPage = () => {
         ))}
       </div>
 
-      {/* ✅ Pagination */}
+      {/* 📄 PAGINATION */}
       {totalPages > 1 && (
         <div className="flex justify-center mt-6 gap-3">
           {[...Array(totalPages)].map((_, i) => (
@@ -122,7 +180,9 @@ const ShowsPage = () => {
               key={i}
               onClick={() => setCurrentPage(i + 1)}
               className={`px-3 py-1 rounded ${
-                currentPage === i + 1 ? "bg-red-500" : "bg-gray-700"
+                currentPage === i + 1
+                  ? "bg-red-500 text-white"
+                  : "bg-gray-700 text-white"
               }`}
             >
               {i + 1}
@@ -133,4 +193,5 @@ const ShowsPage = () => {
     </div>
   );
 };
+
 export default ShowsPage;

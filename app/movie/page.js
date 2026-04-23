@@ -60,7 +60,7 @@ const MoviesPage = () => {
     },
   ];
 
-  // ✅ Pagination
+  //  Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const moviesPerPage = 8;
 

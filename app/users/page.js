@@ -18,11 +18,10 @@ export default function UsersPage() {
     role: "Customer",
   });
 
-  // 🔥 GET USERS
-  const fetchUsers = async () => {
-    const res = await fetch("/api/users");
-    const data = await res.json();
-    setUsers(data.users || []);
+  // 🔥 GET USERS FROM LOCAL STORAGE
+  const fetchUsers = () => {
+    const data = JSON.parse(localStorage.getItem("users")) || [];
+    setUsers(data);
   };
 
   useEffect(() => {
@@ -30,18 +29,16 @@ export default function UsersPage() {
   }, []);
 
   // ✅ CREATE / UPDATE
-  const handleSubmit = async () => {
-    if (editId) {
-      await fetch(`/api/users/${editId}`, {
-        method: "PUT",
-        body: JSON.stringify(form),
-      });
+  const handleSubmit = () => {
+    let allUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+    if (editId !== null) {
+      allUsers[editId] = form;
     } else {
-      await fetch("/api/users", {
-        method: "POST",
-        body: JSON.stringify(form),
-      });
+      allUsers.push(form);
     }
+
+    localStorage.setItem("users", JSON.stringify(allUsers));
 
     setForm({ name: "", email: "", mobile: "", role: "Customer" });
     setShowModal(false);
@@ -50,17 +47,17 @@ export default function UsersPage() {
   };
 
   // ✏️ EDIT
-  const handleEdit = (user) => {
+  const handleEdit = (user, index) => {
     setForm(user);
-    setEditId(user._id);
+    setEditId(index);
     setShowModal(true);
   };
 
   // ❌ DELETE
-  const handleDelete = async (id) => {
-    await fetch(`/api/users/${id}`, {
-      method: "DELETE",
-    });
+  const handleDelete = (index) => {
+    let allUsers = JSON.parse(localStorage.getItem("users")) || [];
+    allUsers.splice(index, 1);
+    localStorage.setItem("users", JSON.stringify(allUsers));
     fetchUsers();
   };
 
@@ -70,7 +67,7 @@ export default function UsersPage() {
       u.name?.toLowerCase().includes(search.toLowerCase()) ||
       u.email?.toLowerCase().includes(search.toLowerCase()) ||
       u.role?.toLowerCase().includes(search.toLowerCase()) ||
-      u.mobile?.includes(search),
+      u.mobile?.includes(search)
   );
 
   // 📄 PAGINATION
@@ -119,8 +116,8 @@ export default function UsersPage() {
         </thead>
 
         <tbody>
-          {currentUsers.map((u) => (
-            <tr key={u._id} className="text-center">
+          {currentUsers.map((u, index) => (
+            <tr key={index} className="text-center">
               <td className="border p-2">{u.name}</td>
               <td className="border p-2">{u.email}</td>
               <td className="border p-2">{u.mobile}</td>
@@ -128,14 +125,14 @@ export default function UsersPage() {
 
               <td className="border p-2 space-x-2">
                 <button
-                  onClick={() => handleEdit(u)}
+                  onClick={() => handleEdit(u, index)}
                   className="bg-blue-500 text-white px-2 py-1 rounded"
                 >
                   Edit
                 </button>
 
                 <button
-                  onClick={() => handleDelete(u._id)}
+                  onClick={() => handleDelete(index)}
                   className="bg-red-500 text-white px-2 py-1 rounded"
                 >
                   Delete
@@ -166,7 +163,7 @@ export default function UsersPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded w-96">
             <h2 className="text-xl font-bold mb-4">
-              {editId ? "Edit User" : "Add User"}
+              {editId !== null ? "Edit User" : "Add User"}
             </h2>
 
             <input
@@ -211,7 +208,7 @@ export default function UsersPage() {
                 onClick={handleSubmit}
                 className="bg-green-500 text-white px-3 py-1"
               >
-                {editId ? "Update" : "Save"}
+                {editId !== null ? "Update" : "Save"}
               </button>
             </div>
           </div>

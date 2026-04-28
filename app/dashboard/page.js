@@ -1,22 +1,34 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
+  const router = useRouter();
+
   const [activeTab, setActiveTab] = useState("users");
   const [search, setSearch] = useState("");
 
   const [users, setUsers] = useState([]);
   const [bookings, setBookings] = useState([]);
 
-  // 🔥 FETCH USERS FROM MONGODB
+  // 🔒 PROTECT ROUTE
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+    if (!isLoggedIn) {
+      router.push("/signin");
+    }
+  }, []);
+
+  // 👥 FETCH USERS
   useEffect(() => {
     fetch("/api/users")
       .then((res) => res.json())
       .then((data) => setUsers(data.users || []));
   }, []);
 
-  // 🎟 Dummy bookings (baad me DB se karenge)
+  // 🎟 BOOKINGS (dummy)
   useEffect(() => {
     setBookings([
       {
@@ -43,25 +55,31 @@ export default function Dashboard() {
     (u) =>
       u.name?.toLowerCase().includes(search.toLowerCase()) ||
       u.email?.toLowerCase().includes(search.toLowerCase()) ||
-      u.role?.toLowerCase().includes(search.toLowerCase()) ||
-      u.mobile?.includes(search),
+      u.mobile?.includes(search)
   );
 
   const filteredBookings = bookings.filter(
     (b) =>
       b.movie.toLowerCase().includes(search.toLowerCase()) ||
-      b.theater.toLowerCase().includes(search.toLowerCase()),
+      b.theater.toLowerCase().includes(search.toLowerCase())
   );
+
+  // 🚪 LOGOUT
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    router.push("/signin");
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* 🔥 Sidebar */}
+      
+      {/* Sidebar */}
       <div className="w-60 bg-black text-white p-5">
-        <h1 className="text-2xl font-bold mb-8">CineHub Admin</h1>
+        <h1 className="text-2xl font-bold mb-8">CineHub</h1>
 
         <button
           onClick={() => setActiveTab("users")}
-          className={`block w-full text-left p-3 rounded mb-2 ${
+          className={`w-full text-left p-3 mb-2 rounded ${
             activeTab === "users" ? "bg-red-500" : "hover:bg-gray-700"
           }`}
         >
@@ -70,16 +88,24 @@ export default function Dashboard() {
 
         <button
           onClick={() => setActiveTab("bookings")}
-          className={`block w-full text-left p-3 rounded ${
+          className={`w-full text-left p-3 rounded ${
             activeTab === "bookings" ? "bg-red-500" : "hover:bg-gray-700"
           }`}
         >
           🎟 Bookings
         </button>
+
+        <button
+          onClick={handleLogout}
+          className="mt-10 w-full bg-red-600 p-2 rounded"
+        >
+          Logout
+        </button>
       </div>
 
-      {/* 🔥 Main */}
+      {/* Main */}
       <div className="flex-1 p-6">
+
         {/* Search */}
         <input
           type="text"
@@ -89,10 +115,10 @@ export default function Dashboard() {
           onChange={(e) => setSearch(e.target.value)}
         />
 
-        {/* 👥 USERS */}
+        {/* USERS */}
         {activeTab === "users" && (
           <div className="bg-white p-6 rounded shadow">
-            <h2 className="text-xl font-bold mb-4">👥 Users</h2>
+            <h2 className="text-xl font-bold mb-4">Users</h2>
 
             <table className="w-full border">
               <thead className="bg-black text-white">
@@ -100,7 +126,6 @@ export default function Dashboard() {
                   <th className="p-3 border">#</th>
                   <th className="p-3 border">Name</th>
                   <th className="p-3 border">Email</th>
-                  <th className="p-3 border">Role</th>
                   <th className="p-3 border">Mobile</th>
                 </tr>
               </thead>
@@ -112,14 +137,13 @@ export default function Dashboard() {
                       <td className="p-2 border">{i + 1}</td>
                       <td className="p-2 border">{u.name}</td>
                       <td className="p-2 border">{u.email}</td>
-                      <td className="p-2 border">{u.role}</td>
                       <td className="p-2 border">{u.mobile}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5" className="p-4 text-center">
-                      No Users Found 😢
+                    <td colSpan="4" className="p-4 text-center">
+                      No Users Found
                     </td>
                   </tr>
                 )}
@@ -128,10 +152,10 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* 🎟 BOOKINGS */}
+        {/* BOOKINGS */}
         {activeTab === "bookings" && (
           <div className="bg-white p-6 rounded shadow">
-            <h2 className="text-xl font-bold mb-4">🎟 Bookings</h2>
+            <h2 className="text-xl font-bold mb-4">Bookings</h2>
 
             <table className="w-full border">
               <thead className="bg-black text-white">
@@ -160,6 +184,7 @@ export default function Dashboard() {
             </table>
           </div>
         )}
+
       </div>
     </div>
   );

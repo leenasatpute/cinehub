@@ -147,7 +147,7 @@ const MoviesPage = () => {
             <div className="p-4">
               <h2 className="text-lg font-semibold">{movie.title}</h2>
 
-              <Link href={`/movie/${movie.id}`}>
+              <Link href={`/seat-booking?movie=${movie.title}`}>
                 <button className="mt-3 bg-red-500 px-3 py-1 rounded w-full hover:bg-red-600">
                   Book Now
                 </button>

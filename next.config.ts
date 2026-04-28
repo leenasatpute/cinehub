@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "image.winudf.com",
+        hostname: "static.vecteezy.com",
         pathname: "/**",
       },
     ],

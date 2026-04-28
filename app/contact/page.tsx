@@ -39,7 +39,7 @@ export default function ContactPage() {
         {/* Image Section */}
         <div className="w-full md:w-1/2 flex justify-center">
           <Image
-            src="https://image.winudf.com/v2/image1/Y29tLmNpbmVodWJpcHR2LnNpeGFuZHJvaWRfc2NyZWVuXzBfMTY1NDkzMjQxNF8wMTA/screen-0.jpg?fakeurl=1&type=.jpg"
+            src="https://static.vecteezy.com/system/resources/thumbnails/044/514/545/small/background-a-movie-theater-where-love-stories-are-unfolding-on-the-big-screen-and-the-smell-of-popcorn-fills-the-air-photo.jpg"
             alt="contact"
             width={500}
             height={500}

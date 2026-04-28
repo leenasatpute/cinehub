@@ -11,10 +11,10 @@ const Header = () => {
         <Link href="/">Home</Link>
         <Link href="/movie">Movies</Link>
         <Link href="/shows">Shows</Link>
-        <Link href="#" className="hover:text-red-500 transition">
-          Events
+        <Link href="/about" className="hover:text-red-500 transition">
+         About
         </Link>
-        <Link href="#" className="hover:text-red-500 transition">
+        <Link href="/sports" className="hover:text-red-500 transition">
           Sports
         </Link>
         <Link href="/contact">Contact</Link>

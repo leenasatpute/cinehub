@@ -7,17 +7,64 @@ export async function POST(req) {
 
     const body = await req.json();
 
-    const user = await User.create(body);
+    const { name, email, mobile, password } = body;
 
-    return Response.json({ success: true, user });
+    // 🔴 check empty fields
+    if (!name || !email || !mobile || !password) {
+      return Response.json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+
+    // 🔴 check duplicate email
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return Response.json({
+        success: false,
+        message: "Email already exists",
+      });
+    }
+
+    // ✅ create user
+    const user = await User.create({
+      name,
+      email,
+      mobile,
+      password,
+      role: "Customer",
+    });
+
+    return Response.json({
+      success: true,
+      message: "Account Created Successfully",
+      user,
+    });
+
   } catch (error) {
-    return Response.json({ success: false, error: error.message });
+    return Response.json({
+      success: false,
+      message: error.message,
+    });
   }
 }
+
 export async function GET() {
-  await connectDB();
+  try {
+    await connectDB();
 
-  const users = await User.find();
+    const users = await User.find().select("-password"); // 🔥 password hide
 
-  return Response.json({ users });
+    return Response.json({
+      success: true,
+      users,
+    });
+
+  } catch (error) {
+    return Response.json({
+      success: false,
+      message: error.message,
+    });
+  }
 }

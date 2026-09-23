@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Armchair, Monitor } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -108,7 +108,7 @@ const bookedSeatsData: Record<string, string[]> = {
   "4-3PM": ["E5", "A6"],
 };
 
-export default function BookingPage() {
+ function BookingPage() {
   const router = useRouter();
 
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
@@ -265,3 +265,13 @@ export default function BookingPage() {
     </div>
   );
 }
+
+const SeatBooking = ()=>{
+  return <>
+  <Suspense>
+    <BookingPage/>
+  </Suspense>
+  </>
+}
+
+export default SeatBooking

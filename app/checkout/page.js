@@ -1,15 +1,30 @@
 "use client";
 
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const searchParams = useSearchParams();
 
-  const seats = searchParams.get("seats");
-  const total = searchParams.get("total");
+  const [filters, setFilters] = useState({
+    seats: "",
+    total: "",
+  });
+
+  useEffect(() => {
+    const seats = searchParams.get("seats");
+    const total = searchParams.get("total");
+
+    setFilters({
+      seats: seats || "",
+      total: total || "",
+    });
+  }, [searchParams]);
 
   const handleBooking = async () => {
-    console.log("Button Clicked ✅"); // 👈 check 1
+    console.log("Button Clicked ✅");
+
+    const { seats, total } = filters;
 
     try {
       const res = await fetch("/api/bookings", {
@@ -25,7 +40,7 @@ export default function CheckoutPage() {
 
       const data = await res.json();
 
-      console.log("Response:", data); //
+      console.log("Response:", data);
 
       if (data.success) {
         alert("Booking Successful 🎉");
@@ -34,6 +49,7 @@ export default function CheckoutPage() {
       }
     } catch (error) {
       console.log("Error:", error);
+      alert("Something went wrong ❌");
     }
   };
 
@@ -41,8 +57,8 @@ export default function CheckoutPage() {
     <div className="p-6">
       <h1 className="text-2xl font-bold">Checkout Page</h1>
 
-      <p className="mt-4">Seats: {seats}</p>
-      <p>Total: ₹{total}</p>
+      <p className="mt-4">Seats: {filters.seats}</p>
+      <p>Total: ₹{filters.total}</p>
 
       <button
         onClick={handleBooking}
@@ -51,5 +67,13 @@ export default function CheckoutPage() {
         Confirm Booking
       </button>
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div className="p-6">Loading...</div>}>
+      <CheckoutContent />
+    </Suspense>
   );
 }

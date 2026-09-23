@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link';
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, SubmitEventHandler, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function Signup() {
@@ -17,7 +17,7 @@ export default function Signup() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
 
     setFormData({
@@ -28,7 +28,7 @@ export default function Signup() {
     setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:FormEvent) => {
     e.preventDefault();
 
     // 🔥 DEBUG (check console)
@@ -76,7 +76,7 @@ export default function Signup() {
           <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
         )}
 
-        <form onSubmit={handleSubmit} autoComplete="off" className="space-y-4">
+        <form onSubmit={handleSubmit}  className="space-y-4">
 
           <input
             type="text"

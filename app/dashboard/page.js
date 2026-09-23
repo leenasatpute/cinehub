@@ -8,6 +8,7 @@ export default function Dashboard() {
 
   const [activeTab, setActiveTab] = useState("users");
   const [search, setSearch] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const [users, setUsers] = useState([]);
   const [bookings, setBookings] = useState([]);
@@ -19,13 +20,13 @@ export default function Dashboard() {
     if (!isLoggedIn) {
       router.push("/signin");
     }
-  }, []);
+  }, [router]);
 
   // 👥 FETCH USERS
   useEffect(() => {
     fetch("/api/users")
-      .then((res) => res.json())
-      .then((data) => setUsers(data.users || []));
+ .then((res) => res.json())
+ .then((data) => setUsers(data.users || []));
   }, []);
 
   // 🎟 BOOKINGS (dummy)
@@ -72,39 +73,63 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      
+
       {/* Sidebar */}
-      <div className="w-60 bg-black text-white p-5">
-        <h1 className="text-2xl font-bold mb-8">CineHub</h1>
+      {sidebarOpen && (
+        <div className="w-60 bg-white text-gray-900 p-5 shadow-lg border-r border-gray-200 flex flex-col">
+          <div className="flex justify-end mb-8">
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="p-1 hover:bg-gray-100 rounded"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
 
-        <button
-          onClick={() => setActiveTab("users")}
-          className={`w-full text-left p-3 mb-2 rounded ${
-            activeTab === "users" ? "bg-red-500" : "hover:bg-gray-700"
-          }`}
-        >
-          👥 Users
-        </button>
+          <div className="flex-1">
+            <button
+              onClick={() => setActiveTab("users")}
+              className={`w-full text-left p-3 mb-2 rounded ${
+                activeTab === "users"? "bg-red-500 text-white" : "hover:bg-gray-100"
+              }`}
+            >
+              👥 Users
+            </button>
 
-        <button
-          onClick={() => setActiveTab("bookings")}
-          className={`w-full text-left p-3 rounded ${
-            activeTab === "bookings" ? "bg-red-500" : "hover:bg-gray-700"
-          }`}
-        >
-          🎟 Bookings
-        </button>
+            <button
+              onClick={() => setActiveTab("bookings")}
+              className={`w-full text-left p-3 rounded ${
+                activeTab === "bookings"? "bg-red-500 text-white" : "hover:bg-gray-100"
+              }`}
+            >
+              🎟 Bookings
+            </button>
+          </div>
 
-        <button
-          onClick={handleLogout}
-          className="mt-10 w-full bg-red-600 p-2 rounded"
-        >
-          Logout
-        </button>
-      </div>
+          <button
+            onClick={handleLogout}
+            className="w-full bg-red-600 text-white p-2 rounded hover:bg-red-700 transition"
+          >
+            Logout
+          </button>
+        </div>
+      )}
 
       {/* Main */}
       <div className="flex-1 p-6">
+        {/* Top Bar with 3 Line Icon */}
+        {!sidebarOpen && (
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="mb-6 p-2 bg-gray-900 text-white rounded hover:bg-gray-800"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        )}
 
         {/* Search */}
         <input
@@ -121,7 +146,7 @@ export default function Dashboard() {
             <h2 className="text-xl font-bold mb-4">Users</h2>
 
             <table className="w-full border">
-              <thead className="bg-black text-white">
+              <thead className="bg-gray-900 text-white">
                 <tr>
                   <th className="p-3 border">#</th>
                   <th className="p-3 border">Name</th>
@@ -131,7 +156,7 @@ export default function Dashboard() {
               </thead>
 
               <tbody>
-                {filteredUsers.length > 0 ? (
+                {filteredUsers.length > 0? (
                   filteredUsers.map((u, i) => (
                     <tr key={u._id || i} className="text-center">
                       <td className="p-2 border">{i + 1}</td>
@@ -158,7 +183,7 @@ export default function Dashboard() {
             <h2 className="text-xl font-bold mb-4">Bookings</h2>
 
             <table className="w-full border">
-              <thead className="bg-black text-white">
+              <thead className="bg-gray-900 text-white">
                 <tr>
                   <th className="p-3 border">#</th>
                   <th className="p-3 border">Movie</th>

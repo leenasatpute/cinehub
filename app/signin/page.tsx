@@ -7,14 +7,18 @@ import { useRouter } from 'next/navigation';
 export default function Signin() {
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    email: string;
+    password: string;
+    remember: boolean;
+  }>({
     email: '',
     password: '',
     remember: false
   });
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -36,10 +40,11 @@ export default function Signin() {
       formData.email === storedUser.email &&
       formData.password === storedUser.password
     ) {
-      // ✅ SUCCESS → redirect
-      router.push("/dashboard");
+      // ✅ FIX
+      localStorage.setItem("isLoggedIn", "true");
+
+      router.replace("/dashboard");
     } else {
-      // ❌ ERROR
       setError("Invalid email or password ❌");
     }
   };
@@ -54,14 +59,12 @@ export default function Signin() {
             <p className="text-gray-500">Sign in to continue</p>
           </div>
 
-          {/* ❌ Error Message */}
           {error && (
             <p className="text-red-500 text-sm text-center mb-4">{error}</p>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
-            {/* EMAIL */}
             <input
               type="email"
               name="email"
@@ -73,7 +76,6 @@ export default function Signin() {
               className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500 outline-none"
             />
 
-            {/* PASSWORD */}
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -95,7 +97,6 @@ export default function Signin() {
               </button>
             </div>
 
-            {/* REMEMBER */}
             <label className="flex items-center gap-2 text-sm">
               <input
                 type="checkbox"
@@ -106,7 +107,6 @@ export default function Signin() {
               Remember me
             </label>
 
-            {/* BUTTON */}
             <button
               type="submit"
               className="w-full bg-red-500 text-white p-3 rounded-lg font-bold hover:bg-red-600"

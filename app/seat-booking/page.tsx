@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Armchair } from "lucide-react";
 
@@ -8,7 +8,7 @@ const rows = ["A", "B", "C", "D", "E"];
 const seatsPerRow = 8;
 const pricePerSeat = 150;
 
-export default function BookingPage() {
+  function BookingPage() {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [showMessage, setShowMessage] = useState(false);
 
@@ -118,3 +118,13 @@ export default function BookingPage() {
     </div>
   );
 }
+
+const SeatBooking = ()=>{
+  return <>
+  <Suspense>
+    <BookingPage/>
+  </Suspense>
+  </>
+}
+
+export default SeatBooking
